@@ -35,12 +35,7 @@ function Header() {
           </form>
 
           {/* Avatar */}
-          <Gravatar
-            name="RM"
-            email="email@example.com"
-            size={50}
-            color="0055D1"
-          />
+          <Gravatar email="email@example.com" size={50} color="0055D1" />
         </div>
       </div>
       <div className="flex items-center justify-center px-5 py-2 md:py-5">
