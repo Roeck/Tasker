@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import Gravatar from "react-gravatar";
 
 function Header() {
   return (
@@ -18,9 +19,29 @@ function Header() {
           className="w-44 md:w-56 pb-10 md:pb-0 object-contain"
         />
 
-        {/* Search Box */}
+        <div className="flex items-center space-x-5 flex-1 justify-end w-full">
+          {/* Search Box */}
+          <form className="flex items-center space-x-5 bg-white rounded-md p-2 shadow-md flex-1 md:flex-initial">
+            <MagnifyingGlassIcon className="h-6 w-6 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search"
+              className="flex-1 outline-none p-2"
+              // onChange={(e) => setSearchString(e.target.value)}
+            />
+            <button hidden type="submit">
+              Search
+            </button>
+          </form>
 
-        {/* Avatar */}
+          {/* Avatar */}
+          <Gravatar
+            name="RM"
+            email="email@example.com"
+            size={50}
+            color="0055D1"
+          />
+        </div>
       </div>
     </header>
   );
