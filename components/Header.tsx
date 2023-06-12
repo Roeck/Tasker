@@ -4,7 +4,15 @@ import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Gravatar from "react-gravatar";
 
+import { useBoardStore } from "@/store/BoardStore";
+
 function Header() {
+  const [board, searchString, setSearchString] = useBoardStore((state) => [
+    state.board,
+    state.searchString,
+    state.setSearchString,
+  ]);
+
   return (
     <header>
       <div className="flex flex-col md:flex-row items-center p-5 bg-indigo-500/10 rounded-b-2xl">
@@ -27,7 +35,7 @@ function Header() {
               type="text"
               placeholder="Search"
               className="flex-1 outline-none p-2"
-              // onChange={(e) => setSearchString(e.target.value)}
+              onChange={(e) => setSearchString(e.target.value)}
             />
             <button hidden type="submit">
               Search
