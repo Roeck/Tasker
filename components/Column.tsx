@@ -2,7 +2,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import React from "react";
-// import TodoCard from "./TodoCard";
+import TodoCard from "./TodoCard";
 import { useBoardStore } from "@/store/BoardStore";
 
 type Props = {
@@ -20,6 +20,7 @@ const idToColumnText: {
 };
 
 function Column({ id, todos, index }: Props) {
+  const [searchString] = useBoardStore((state) => [state.searchString]);
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -41,12 +42,46 @@ function Column({ id, todos, index }: Props) {
                 <h2 className="flex justify-between font-bold text-xl p-2">
                   {idToColumnText[id]}
                   <span className="text-gray-500 bg-gray-200 rounded-full px-2  py-1 text-sm font-normal">
-                    Search string
+                    {!searchString
+                      ? todos.length
+                      : todos.filter((todo) =>
+                          todo.title
+                            .toLocaleLowerCase()
+                            .includes(searchString.toLocaleLowerCase())
+                        ).length}
                   </span>
                 </h2>
 
                 <div className="space-y-2">
-                  {/* <TodoCard /> */}
+                  {todos.map((todo, index) => {
+                    if (
+                      searchString &&
+                      !todo.title
+                        .toLowerCase()
+                        .includes(searchString.toLowerCase())
+                    ) {
+                      return null;
+                    } else {
+                      return (
+                        <Draggable
+                          key={todo.$id}
+                          draggableId={todo.$id}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <TodoCard
+                              todo={todo}
+                              index={index}
+                              id={id}
+                              innerRef={provided.innerRef}
+                              draggableProps={provided.draggableProps}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          )}
+                        </Draggable>
+                      );
+                    }
+                  })}
 
                   {provided.placeholder}
 
