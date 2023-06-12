@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       },
       {
         role: "user",
-        content: `Hi there!Provide a summary of the following projects. Count how many projects are in each category such as To Do, In Progress and Done, then tell the user to have a productive day! Here's the data: ${JSON.stringify(
+        content: `Hi there! Provide a summary of the following projects. Count how many projects are in each category such as To Do, In Progress and Done, then tell the user to have a productive day! Here's the data: ${JSON.stringify(
           todos
         )}`,
       },
