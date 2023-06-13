@@ -4,9 +4,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import { FormEvent, Fragment, useRef, useState } from "react";
 
 import Image from "next/image";
+
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useBoardStore } from "@/store/BoardStore";
 import { useModalStore } from "@/store/ModalStore";
+
+import TaskTypeRadioGroup from "./TaskTypeRadioGroup";
 
 function Modal() {
   const imagePickerRef = useRef<HTMLInputElement>(null);
@@ -62,7 +65,6 @@ function Modal() {
                 >
                   Add a Task
                 </Dialog.Title>
-
                 <div className="mt-2">
                   <input
                     type="text"
@@ -70,8 +72,7 @@ function Modal() {
                     className="w-full border border-gray-300 rounded-md outline-none p-5"
                   />
                 </div>
-                {/* <TaskTypeRadioGroup /> */}
-
+                <TaskTypeRadioGroup />
                 {/* Upload Image Button */}
               </Dialog.Panel>
             </Transition.Child>
