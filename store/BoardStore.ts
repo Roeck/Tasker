@@ -2,7 +2,7 @@ import { ID, databases, storage } from "@/appwrite";
 
 import { create } from "zustand";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
-// import uploadImage from "@/lib/uploadImage";
+import uploadImage from "@/lib/uploadImage";
 
 interface BoardState {
   board: Board;
@@ -72,13 +72,13 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     let file: Image | undefined;
 
     if (image) {
-      // const fileUpload = await uploadImage(image);
-      // if (fileUpload) {
-      //   file = {
-      //     bucketId: fileUpload.bucketId,
-      //     fileId: fileUpload.$id,
-      //   };
-      // }
+      const fileUpload = await uploadImage(image);
+      if (fileUpload) {
+        file = {
+          bucketId: fileUpload.bucketId,
+          fileId: fileUpload.$id,
+        };
+      }
     }
 
     const { $id } = await databases.createDocument(
