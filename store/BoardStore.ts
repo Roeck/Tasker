@@ -1,6 +1,8 @@
+import { ID, databases, storage } from "@/appwrite";
+
 import { create } from "zustand";
-import { databases, storage } from "@/appwrite";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
+// import uploadImage from "@/lib/uploadImage";
 
 interface BoardState {
   board: Board;
@@ -9,11 +11,14 @@ interface BoardState {
   updateTodoInDB: (todo: Todo, columnId: TypedColumn) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
+  deleteTask: (taskIndex: number, todoId: Todo, id: TypedColumn) => void;
   newTaskInput: string;
   setNewTaskInput: (input: string) => void;
   newTaskType: TypedColumn;
   setNewTaskType: (columnId: TypedColumn) => void;
-  deleteTask: (taskIndex: number, todoId: Todo, id: TypedColumn) => void;
+  image: File | null;
+  setImage: (image: File | null) => void;
+  addTask: (todo: string, columnId: TypedColumn, image?: File | null) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -38,13 +43,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   },
   searchString: "",
   setSearchString: (searchString) => set({ searchString }),
-
-  newTaskInput: "",
-  setNewTaskInput: (input: string) => set({ newTaskInput: input }),
-
-  newTaskType: "todo",
-  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
-
   deleteTask: async (taskIndex: number, todo: Todo, id: TypedColumn) => {
     const newColumns = new Map(get().board.columns);
 
@@ -55,11 +53,73 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     if (todo.image) {
       await storage.deleteFile(todo.image.bucketId, todo.image.fileId);
     }
-
     await databases.deleteDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
       todo.$id
     );
+  },
+  newTaskInput: "",
+  setNewTaskInput: (input: string) => set({ newTaskInput: input }),
+
+  newTaskType: "todo",
+  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
+
+  image: null,
+  setImage: (image: File | null) => set({ image }),
+
+  addTask: async (todo: string, columnId: TypedColumn, image?: File | null) => {
+    let file: Image | undefined;
+
+    if (image) {
+      // const fileUpload = await uploadImage(image);
+      // if (fileUpload) {
+      //   file = {
+      //     bucketId: fileUpload.bucketId,
+      //     fileId: fileUpload.$id,
+      //   };
+      // }
+    }
+
+    const { $id } = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        title: todo,
+        status: columnId,
+        // include image if it exists
+        ...(file && { image: JSON.stringify(file) }),
+      }
+    );
+
+    set({ newTaskInput: "" });
+
+    set((state) => {
+      const newColumns = new Map(state.board.columns);
+
+      const newTodo: Todo = {
+        $id,
+        $createdAt: new Date().toISOString(),
+        title: todo,
+        status: columnId,
+        ...(file && { image: file }),
+      };
+
+      const column = newColumns.get(columnId);
+      if (!column) {
+        newColumns.set(columnId, {
+          id: columnId,
+          todos: [newTodo],
+        });
+      } else {
+        newColumns.get(columnId)?.todos.push(newTodo);
+      }
+      return {
+        board: {
+          columns: newColumns,
+        },
+      };
+    });
   },
 }));
