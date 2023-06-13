@@ -6,9 +6,15 @@ import { FormEvent, Fragment, useRef, useState } from "react";
 import Image from "next/image";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useBoardStore } from "@/store/BoardStore";
+import { useModalStore } from "@/store/ModalStore";
 
 function Modal() {
   const imagePickerRef = useRef<HTMLInputElement>(null);
+
+  const [isOpen, closeModal] = useModalStore((state) => [
+    state.isOpen,
+    state.closeModal,
+  ]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
