@@ -30,16 +30,17 @@ function Header() {
 
   return (
     <header>
-      <div className="flex flex-col md:flex-row items-center p-5 bg-black-500/10 rounded-b-2xl">
+      <div className="flex flex-col md:flex-row items-center p-5 bg-indigo-500/10 rounded-b-2xl">
         {/* invisible div - will act like a gradient */}
         <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-indigo-800 to-[#0055D1] rounded-md filter blur-3xl opacity-50 -z-50" />
 
-        <Image src="/logo.png" width={50} height={50} alt="Tasker" />
+        {/* <Image src="/logo.svg" width={220} height={220} alt="Tasker" /> */}
+        <Gravatar email="42754@gmail.com" size={50} />
 
         <div className="flex items-center space-x-5 flex-1 justify-end w-full">
           {/* Search Box */}
           <form className="flex items-center space-x-5 bg-white rounded-md p-2 shadow-md flex-1 md:flex-initial">
-            <MagnifyingGlassIcon className="h-6 w-6 text-gray-400" />
+            <MagnifyingGlassIcon className="h-6 w-6 text-black-400" />
             <input
               type="text"
               placeholder="Search"
@@ -50,16 +51,13 @@ function Header() {
               Search
             </button>
           </form>
-
-          {/* Avatar */}
-          <Gravatar email="a-email@example.com" size={50} />
         </div>
       </div>
 
       {/* gpt */}
-      <div className="flex items-center justify-center px-5 py-2 md:py-5">
+      {/* <div className="flex items-center justify-center px-5 py-2 md:py-5">
         {false && (
-          <p className="flex items-center text-sm font-light pr-5 shadow-xl rounded-xl w-fit bg-white italic max-w-3xl text-[#0055d1] p-5">
+          <p className="flex items-center text-sm font-light pr-5 shadow-xl rounded-xl w-fit bg-indigo italic max-w-3xl text-[#0055d1] p-5">
             <UserCircleIcon
               className={`inline-block h-10 w-10 text-[#0055D1] mr-1 ${
                 loading && "animate-spin"
@@ -70,7 +68,7 @@ function Header() {
               : "GPT is summarising for your day..."}
           </p>
         )}
-      </div>
+      </div> */}
     </header>
   );
 }

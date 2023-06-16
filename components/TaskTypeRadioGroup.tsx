@@ -49,10 +49,10 @@ function TaskTypeRadioGroup() {
                   className={({ active, checked }) =>
                     `${
                       active
-                        ? "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300"
+                        ? "ring-2 ring-indigo ring-opacity-60 ring-offset-2 ring-offset-sky-300"
                         : ""
                     } ${
-                      checked ? `${type.color} bg-opacity-75 text-white` : ""
+                      checked ? `${type.color} bg-opacity-75 text-indigo` : ""
                     } relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
                   }
                 >
@@ -64,7 +64,7 @@ function TaskTypeRadioGroup() {
                             <RadioGroup.Label
                               as="p"
                               className={`font-medium ${
-                                checked ? "text-white" : "text-gray-900"
+                                checked ? "text-indigo" : "text-gray-900"
                               }`}
                             >
                               {type.name}
@@ -72,7 +72,7 @@ function TaskTypeRadioGroup() {
                             <RadioGroup.Description
                               as="span"
                               className={`inline ${
-                                checked ? "text-white" : "text-gray-500"
+                                checked ? "text-indigo" : "text-gray-500"
                               }`}
                             >
                               <span>{type.description}</span>
@@ -80,7 +80,7 @@ function TaskTypeRadioGroup() {
                           </div>
                         </div>
                         {checked && (
-                          <div className="shrink-0 text-white">
+                          <div className="shrink-0 text-indigo">
                             <CheckCircleIcon className="h-6 w-6" />
                           </div>
                         )}
